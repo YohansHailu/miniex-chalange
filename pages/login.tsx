@@ -13,6 +13,7 @@ import LoadingButton from '@/components/ui/LoadingButton';
 import SignUpModal from '@/components/ui/SignUpModal';
 import { loginWithEmail, useIsLoginWithEmailLoading } from '@/components/redux/auth/loginWithEmail';
 import { LoadingStateTypes } from '@/components/redux/types';
+import Link from 'next/link';
 
 export const googleLoginProvider = new GoogleAuthProvider();
 
@@ -25,7 +26,6 @@ const LoginPage: NextPage = () => {
     const [disableSubmit, setDisableSubmit] = useState(true);
     const isLoading = useIsLoginWithEmailLoading();
 
-    const [showRegistration, setshowRegistration] = useState(false);
     const router = useRouter();
 
     // Realtime validation to enable submit button
@@ -111,17 +111,13 @@ const LoginPage: NextPage = () => {
                                     </div>
                                 </div>
                                 <div className="relative flex justify-center text-sm">
-                                    <div
-                                        onClick={() => setshowRegistration(true)}
-                                        className="ml-2 cursor-pointer font-medium text-violet-600 hover:text-violet-400"
-                                    >
-                                        Sign Up
+                                    <div className="ml-2 cursor-pointer font-medium text-violet-600 hover:text-violet-400">
+                                        <Link href="/sign-up">Sign Up here</Link>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <SignUpModal open={showRegistration} setOpen={setshowRegistration} />
                 </div>
             </div>
             <ToastBox />

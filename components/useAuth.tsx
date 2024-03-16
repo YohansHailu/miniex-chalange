@@ -43,6 +43,13 @@ export const AuthGuard = (props: { children: React.ReactElement }): React.ReactE
     } else if (authResult.type === LoadingStateTypes.NOT_LOADED) {
         window.location.href = '/login';
         return <Spinner />;
+    } else if (
+        authResult.type === LoadingStateTypes.LOADED &&
+        authResult.user != null &&
+        authResult.user.phoneNumber == null
+    ) {
+        window.location.href = '/verify-phone';
+        return <Spinner />;
     } else {
         return (
             <>

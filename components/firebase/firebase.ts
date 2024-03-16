@@ -9,19 +9,20 @@ import { /* connectStorageEmulator, */ getStorage } from 'firebase/storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: 'FILL_ME_IN',
-    authDomain: 'FILL_ME_IN',
-    projectId: 'FILL_ME_IN',
-    storageBucket: 'FILL_ME_IN',
-    messagingSenderId: 'FILL_ME_IN',
-    appId: 'FILL_ME_IN',
+    apiKey: 'AIzaSyDko-rD0WTngRttJn7iEnCwQY6iiUp6Qg8',
+    authDomain: 'miniextentions.firebaseapp.com',
+    projectId: 'miniextentions',
+    storageBucket: 'miniextentions.appspot.com',
+    messagingSenderId: '945367758906',
+    appId: '1:945367758906:web:e96cec5e637c16c1841d03',
+    measurementId: 'G-9VFM614QJT',
 };
 
 // Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
 
 export const firestore = getFirestore(firebaseApp);
-export const baseBucketName = 'FILL_ME_IN';
+export const baseBucketName = 'miniextentions';
 
 /* if (isDev) {
     connectFirestoreEmulator(firestore, '127.0.0.1', 8081);

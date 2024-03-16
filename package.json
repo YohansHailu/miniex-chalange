@@ -11,7 +11,7 @@
     "typescript"
   ],
   "scripts": {
-    "dev": "bash ./scripts/dev.sh",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "export": "next build && next export",

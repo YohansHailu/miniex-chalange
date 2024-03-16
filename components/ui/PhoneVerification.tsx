@@ -109,7 +109,7 @@ const PhoneVerification = () => {
                         alt="Workflow"
                     />
                     <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900">
-                        Sign in to your account
+                        Verify your phone number
                     </h2>
                 </div>
 
