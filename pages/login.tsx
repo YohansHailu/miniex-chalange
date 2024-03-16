@@ -13,6 +13,7 @@ import LoadingButton from '@/components/ui/LoadingButton';
 import SignUpModal from '@/components/ui/SignUpModal';
 import { loginWithEmail, useIsLoginWithEmailLoading } from '@/components/redux/auth/loginWithEmail';
 import { LoadingStateTypes } from '@/components/redux/types';
+import UseYourPhoneButton from '@/components/ui/UseYourPhoneButton';
 import Link from 'next/link';
 
 export const googleLoginProvider = new GoogleAuthProvider();
@@ -102,6 +103,11 @@ const LoginPage: NextPage = () => {
                         </div>
                         <div className="mt-2 grid grid-cols-1 gap-3">
                             <LoginWithGoogleButton />
+                        </div>
+                        <div className="mt-2 grid grid-cols-1 gap-3">
+                            <Link href="/verify-phone?signin=true">
+                                <UseYourPhoneButton />
+                            </Link>
                         </div>
                         <div className="mt-6">
                             <div className="flex justify-center">

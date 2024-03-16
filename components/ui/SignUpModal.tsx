@@ -6,6 +6,7 @@ import LoginWithGoogleButton from './LoginWithGoogleButton';
 import Input from './Input';
 import { isEmail } from 'validator';
 import { loginWithEmail, useIsLoginWithEmailLoading } from '../redux/auth/loginWithEmail';
+import UseYourPhoneButton from './UseYourPhoneButton';
 import Link from 'next/link';
 
 const SignUpModal = () => {
@@ -81,6 +82,12 @@ const SignUpModal = () => {
                         </div>
                         <div className="mt-2 grid grid-cols-1 gap-3">
                             <LoginWithGoogleButton />
+                        </div>
+
+                        <div className="mt-2 grid grid-cols-1 gap-3">
+                            <Link href="/verify-phone?signup=true">
+                                <UseYourPhoneButton />
+                            </Link>
                         </div>
                         <div className="mt-6">
                             <div className="flex justify-center">
