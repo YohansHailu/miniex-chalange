@@ -10,7 +10,7 @@ import Spinner from '@/components/Spinner';
 import LoginWithGoogleButton from '@/components/ui/LoginWithGoogleButton';
 import Input from '@/components/ui/Input';
 import LoadingButton from '@/components/ui/LoadingButton';
-import SignUpModal from '@/components/ui/SignUpModal';
+import { decryptStoredPhoneNumberCredential } from '@/components/redux/auth/helpers';
 import { loginWithEmail, useIsLoginWithEmailLoading } from '@/components/redux/auth/loginWithEmail';
 import { LoadingStateTypes } from '@/components/redux/types';
 import UseYourPhoneButton from '@/components/ui/UseYourPhoneButton';
@@ -52,15 +52,10 @@ const LoginPage: NextPage = () => {
     );
   }, [email, password, dispatch]);
 
-  let isEmailLink = auth.type === LoadingStateTypes.LOADED &&
-    auth.user != null &&
-    auth.user.phoneNumber != null &&
-    auth.user.email?.split("@")[1] === "notrealdomain.com"
-
   if (auth.type === LoadingStateTypes.LOADING) {
     return <Spinner />;
   } else if (
-    !isEmailLink &&
+    !isLink &&
     auth.type === LoadingStateTypes.LOADED &&
     auth.user != null &&
     (auth.user.email != null || auth.user.email != null)
@@ -106,18 +101,18 @@ const LoginPage: NextPage = () => {
             >
               {isLink ? "Link you email" : "Sign In"}
             </LoadingButton>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="bg-white px-2 text-gray-500">Or login with</span>
+              </div>
+            </div>
+            <div className="mt-2 grid grid-cols-1 gap-3">
+              <LoginWithGoogleButton isLink={true} />
+            </div>
             <div style={{ display: isLink ? "none" : "block" }}>
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="bg-white px-2 text-gray-500">Or login with</span>
-                </div>
-              </div>
-              <div className="mt-2 grid grid-cols-1 gap-3">
-                <LoginWithGoogleButton />
-              </div>
               <div className="mt-2 grid grid-cols-1 gap-3">
                 <Link href="/verify-phone?signin=true">
                   <UseYourPhoneButton />

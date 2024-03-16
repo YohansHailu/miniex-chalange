@@ -5,6 +5,7 @@ import Spinner from './Spinner';
 import { firebaseAuth } from './firebase/firebaseAuth';
 import { LoadingStateTypes } from './redux/types';
 import Header from './ui/Header';
+import { decryptStoredPhoneNumberCredential } from './redux/auth/helpers';
 
 export type AuthContextType =
   | {
@@ -38,29 +39,21 @@ export const useAuth = (): AuthContextType => {
 export const AuthGuard = (props: { children: React.ReactElement }): React.ReactElement => {
   const authResult = useAuth();
   // sleep 1 second
-
+  console.log("am here", authResult.type);
   if (authResult.type === LoadingStateTypes.LOADING) {
-    return <Spinner />;
-  } else if (
-    authResult.type === LoadingStateTypes.NOT_LOADED ||
-    (authResult.type === LoadingStateTypes.LOADED && authResult.user.email == null)
-  ) {
-    window.location.href = '/login';
     return <Spinner />;
   } else if (
     authResult.type === LoadingStateTypes.LOADED &&
     authResult.user != null &&
-    authResult.user.phoneNumber == null
+    authResult.user.phoneNumber == null &&
+    decryptStoredPhoneNumberCredential(localStorage) === null
   ) {
     window.location.href = '/verify-phone?link=true';
     return <Spinner />;
   } else if (
-    authResult.type === LoadingStateTypes.LOADED &&
-    authResult.user != null &&
-    authResult.user.phoneNumber != null &&
-    authResult.user.email?.split("@")[1] === "notrealdomain.com"
+    authResult.type === LoadingStateTypes.NOT_LOADED
   ) {
-    window.location.href = '/login?link=true';
+    window.location.href = decryptStoredPhoneNumberCredential(localStorage) !== null ? '/login?link=true' : '/login';
     return <Spinner />;
   }
 

@@ -1,9 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { decryptStoredPhoneNumberCredential, clearStoredPhoneNumberCredential } from './helpers';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updatePassword,
-  updateEmail,
+  PhoneAuthProvider,
+  updatePhoneNumber
 } from 'firebase/auth';
 import { firebaseAuth } from '@/components/firebase/firebaseAuth';
 import { getFriendlyMessageFromFirebaseErrorCode } from './helpers';
@@ -34,12 +35,29 @@ export const loginWithEmail = createAsyncThunk(
         return;
       }
       if (args.type === 'sign-up') {
-        if (firebaseAuth.currentUser && firebaseAuth.currentUser?.email !== null) {
-          updateEmail(firebaseAuth.currentUser, args.email);
-          updatePassword(firebaseAuth.currentUser, args.password);
-        } else {
-          await createUserWithEmailAndPassword(firebaseAuth, args.email, args.password);
+        await createUserWithEmailAndPassword(firebaseAuth, args.email, args.password);
+        console.log("I didn't rich here what");
+
+        if (decryptStoredPhoneNumberCredential(localStorage) !== null) {
+          let data = decryptStoredPhoneNumberCredential(localStorage);
+          await firebaseAuth.currentUser?.reload();
+          console.log("am here about to cridet ", firebaseAuth.currentUser);
+          if (firebaseAuth.currentUser) {
+            console.log("am criditing", firebaseAuth.currentUser);
+            try {
+              console.log("am here about to update, here is --> ", data);
+              const credential = PhoneAuthProvider.credential(data.verificationId, data.OTPCode);
+              await updatePhoneNumber(firebaseAuth.currentUser, credential);
+              clearStoredPhoneNumberCredential(localStorage);
+
+            } catch (e) {
+              console.log("could not update phone number", e);
+            }
+            console.log("am here about to clear, and done creading");
+          }
+
         }
+
       }
 
       await signInWithEmailAndPassword(firebaseAuth, args.email, args.password);

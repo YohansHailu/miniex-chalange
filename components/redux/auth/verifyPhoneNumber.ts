@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { encryptAndStorePhoneNumberCredential } from './helpers';
 import {
   PhoneAuthProvider,
   RecaptchaVerifier,
@@ -6,7 +7,6 @@ import {
   updatePhoneNumber,
   signInWithCredential,
   signInWithPhoneNumber,
-  createUserWithEmailAndPassword,
 } from 'firebase/auth';
 import { getFriendlyMessageFromFirebaseErrorCode } from './helpers';
 import { showToast } from '../toast/toastSlice';
@@ -15,7 +15,6 @@ import { AuthContextType } from '@/components/useAuth';
 import { firebaseAuth } from '@/components/firebase/firebaseAuth';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import crypto from 'crypto';
 
 export const sendVerificationCode = createAsyncThunk(
   'sendVerificationCode',
@@ -130,14 +129,8 @@ export const verifyPhoneNumber = createAsyncThunk(
         if (args.auth.type !== LoadingStateTypes.LOADED && args.type === 'link') return;
 
         if (args.type === 'signup') {
-          console.log('signing random error');
-          await createUserWithEmailAndPassword(
-            firebaseAuth,
-            args.phoneNumber + '@notRealDomain.com',
-            crypto.randomBytes(20).toString('hex')
-          );
-          // dispatch(loginWithEmail({ type: "sign-up", email: args.phoneNumber + '@gmail.com', password: crypto.randomBytes(20).toString('hex') }));
-          console.log('done sigining with email random error');
+          // encrypt the phone number and store it in local storage
+          encryptAndStorePhoneNumberCredential(localStorage, { verificationId: args.verificationId, OTPCode: args.OTPCode });
         }
         if (firebaseAuth.currentUser) {
           console.log('linking phone number');
