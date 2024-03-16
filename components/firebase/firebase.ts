@@ -1,11 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { /* connectFirestoreEmulator, */ getFirestore } from 'firebase/firestore';
-import { /* connectStorageEmulator, */ getStorage } from 'firebase/storage';
-// import { isDev } from '../isDev';
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore, doc, getDoc, setDoc, DocumentSnapshot } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -24,6 +19,33 @@ export const firebaseApp = initializeApp(firebaseConfig);
 export const firestore = getFirestore(firebaseApp);
 export const baseBucketName = 'miniextentions';
 
-/* if (isDev) {
-    connectFirestoreEmulator(firestore, '127.0.0.1', 8081);
-} */
+export const addPhoneNumberToBucket = async (phoneNumber: string) => {
+    try {
+        // Add the phone number document to the bucket
+        await setDoc(doc(firestore, baseBucketName, phoneNumber), { exists: true });
+        console.log('Phone number added to the bucket:', phoneNumber);
+        return true;
+    } catch (error) {
+        console.error('Error adding phone number to the bucket:', error);
+        return false;
+    }
+};
+
+export const checkPhoneNumberInBucket = async (phoneNumber: string) => {
+    try {
+        // Check if the document with the phone number exists in the bucket
+        const docSnapshot: DocumentSnapshot = await getDoc(
+            doc(firestore, baseBucketName, phoneNumber)
+        );
+        if (docSnapshot.exists()) {
+            console.log('Phone number exists in the bucket:', phoneNumber);
+            return true;
+        } else {
+            console.log('Phone number does not exist in the bucket:', phoneNumber);
+            return false;
+        }
+    } catch (error) {
+        console.error('Error checking phone number in the bucket:', error);
+        return false;
+    }
+};

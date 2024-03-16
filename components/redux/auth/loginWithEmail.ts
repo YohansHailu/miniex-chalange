@@ -1,5 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    updatePassword,
+    updateEmail,
+} from 'firebase/auth';
 import { firebaseAuth } from '@/components/firebase/firebaseAuth';
 import { getFriendlyMessageFromFirebaseErrorCode } from './helpers';
 import { showToast } from '../toast/toastSlice';
@@ -30,7 +35,12 @@ export const loginWithEmail = createAsyncThunk(
             }
 
             if (args.type === 'sign-up') {
-                await createUserWithEmailAndPassword(firebaseAuth, args.email, args.password);
+                if (firebaseAuth.currentUser && firebaseAuth.currentUser?.email !== null) {
+                    updateEmail(firebaseAuth.currentUser, args.email);
+                    updatePassword(firebaseAuth.currentUser, args.password);
+                } else {
+                    await createUserWithEmailAndPassword(firebaseAuth, args.email, args.password);
+                }
             }
 
             await signInWithEmailAndPassword(firebaseAuth, args.email, args.password);

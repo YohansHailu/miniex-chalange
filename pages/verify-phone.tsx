@@ -9,64 +9,52 @@ import { LoadingStateTypes } from '@/components/redux/types';
 import { useRouter } from 'next/router';
 
 const VerifyPhone: NextPage = () => {
-  const auth = useAuth();
-  const router = useRouter();
+    const auth = useAuth();
+    const router = useRouter();
 
-  const { signin, link, signup } = router.query;
+    const { signin, link, signup } = router.query;
 
-  const isSignIn = signin === 'true';
-  const isSignUp = signup === 'true';
-  const isLink = link === 'true';
+    const isSignIn = signin === 'true';
+    const isSignUp = signup === 'true';
+    const isLink = link === 'true';
 
-  if (!isLink && !isSignIn && !isSignUp) {
-    return null;
-  }
+    if (!isLink && !isSignIn && !isSignUp) {
+        return null;
+    }
 
-  if (isSignUp) {
+    const type = isSignIn ? 'signin' : isLink ? 'link' : 'signup';
+
+    const PhoneAlreadyLinked =
+        auth.type === LoadingStateTypes.LOADED &&
+        auth.user != null &&
+        auth.user.phoneNumber != null;
+    const isAuthNotLoaded = auth.type === LoadingStateTypes.NOT_LOADED;
+
+    if (auth.type === LoadingStateTypes.LOADING) {
+        return <Spinner />;
+    } else if (isLink === true && (PhoneAlreadyLinked || isAuthNotLoaded)) {
+        router.push('/');
+        return <Spinner />;
+    } else if (
+        (isSignIn || isSignUp) &&
+        auth.type === LoadingStateTypes.LOADED &&
+        auth.user != null &&
+        auth.user.phoneNumber != null
+    ) {
+        router.push('/');
+        return <Spinner />;
+    }
+
     return (
-      <div className={styles.container}>
-        <Head>
-          <title>Create Next App</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <div>Sign Up</div>
-      </div>
+        <div className={styles.container}>
+            <Head>
+                <title>Create Next App</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+
+            <PhoneVerification type={type} />
+        </div>
     );
-  }
-
-  const type = isSignIn ? 'signin' : 'link';
-
-  const PhoneAlreadyLinked =
-    auth.type === LoadingStateTypes.LOADED &&
-    auth.user != null &&
-    auth.user.phoneNumber != null;
-  const isAuthNotLoaded = auth.type === LoadingStateTypes.NOT_LOADED;
-
-  if (auth.type === LoadingStateTypes.LOADING) {
-    return <Spinner />;
-  } else if (isLink === true && (PhoneAlreadyLinked || isAuthNotLoaded)) {
-    router.push('/');
-    return <Spinner />;
-  } else if (
-    isSignIn &&
-    auth.type === LoadingStateTypes.LOADED &&
-    auth.user != null &&
-    auth.user.phoneNumber != null
-  ) {
-    router.push('/');
-    return <Spinner />;
-  }
-
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <PhoneVerification type={type} />
-    </div>
-  );
 };
 
 export default VerifyPhone;

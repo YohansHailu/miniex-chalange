@@ -13,7 +13,11 @@ const VerifyPhone: NextPage = () => {
 
     if (auth.type === LoadingStateTypes.LOADING) {
         return <Spinner />;
-    } else if (auth.type === LoadingStateTypes.LOADED) {
+    } else if (
+        auth.type === LoadingStateTypes.LOADED &&
+        auth.user != null &&
+        auth.user.email != null
+    ) {
         router.push('/');
         return <Spinner />;
     }

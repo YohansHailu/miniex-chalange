@@ -19,7 +19,7 @@ import {
     verifyPhoneNumber,
 } from '../redux/auth/verifyPhoneNumber';
 
-const PhoneVerification = (prop: { type: 'link' | 'signin' }) => {
+const PhoneVerification = (prop: { type: 'link' | 'signin' | 'signup' }) => {
     const dispatch = useAppDispatch();
     const auth = useAuth();
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -57,15 +57,14 @@ const PhoneVerification = (prop: { type: 'link' | 'signin' }) => {
         );
     };
 
-    const isLinkingPage = prop.type === 'link';
-
     // Validating the filled OTP by user
     const ValidateOtp = async () => {
-        const type = prop.type === 'link' ? 'link' : 'signin';
+        const type = prop.type as 'link' | 'signin' | 'signup';
         // if (auth.type !== LoadingStateTypes.LOADED) return;
         dispatch(
             verifyPhoneNumber({
                 type,
+                phoneNumber,
                 auth,
                 OTPCode,
                 verificationId,
@@ -114,7 +113,11 @@ const PhoneVerification = (prop: { type: 'link' | 'signin' }) => {
                         alt="Workflow"
                     />
                     <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900">
-                        {isLinkingPage ? 'Verify your phone number' : 'Sign using phone number'}
+                        {prop.type == 'link'
+                            ? 'Verify your phone number'
+                            : prop.type == 'signin'
+                            ? 'Sign in using phone number'
+                            : 'Sign up using phone number'}
                     </h2>
                 </div>
 

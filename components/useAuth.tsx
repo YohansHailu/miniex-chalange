@@ -41,7 +41,10 @@ export const AuthGuard = (props: { children: React.ReactElement }): React.ReactE
 
     if (authResult.type === LoadingStateTypes.LOADING) {
         return <Spinner />;
-    } else if (authResult.type === LoadingStateTypes.NOT_LOADED) {
+    } else if (
+        authResult.type === LoadingStateTypes.NOT_LOADED ||
+        (authResult.type === LoadingStateTypes.LOADED && authResult.user.email == null)
+    ) {
         window.location.href = '/login';
         return <Spinner />;
     } else if (
