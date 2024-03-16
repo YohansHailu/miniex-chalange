@@ -8,7 +8,6 @@ import {
   signInWithPhoneNumber,
   createUserWithEmailAndPassword,
 } from 'firebase/auth';
-import { checkPhoneNumberInBucket, addPhoneNumberToBucket } from '@/components/firebase/firebase';
 import { getFriendlyMessageFromFirebaseErrorCode } from './helpers';
 import { showToast } from '../toast/toastSlice';
 import { LoadingStateTypes } from '../types';
@@ -17,7 +16,6 @@ import { firebaseAuth } from '@/components/firebase/firebaseAuth';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import crypto from 'crypto';
-import { loginWithEmail } from './loginWithEmail';
 
 export const sendVerificationCode = createAsyncThunk(
   'sendVerificationCode',
@@ -135,7 +133,7 @@ export const verifyPhoneNumber = createAsyncThunk(
           console.log('signing random error');
           await createUserWithEmailAndPassword(
             firebaseAuth,
-            args.phoneNumber + '@gmail.com',
+            args.phoneNumber + '@notRealDomain.com',
             crypto.randomBytes(20).toString('hex')
           );
           // dispatch(loginWithEmail({ type: "sign-up", email: args.phoneNumber + '@gmail.com', password: crypto.randomBytes(20).toString('hex') }));

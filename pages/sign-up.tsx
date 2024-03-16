@@ -8,29 +8,29 @@ import { LoadingStateTypes } from '@/components/redux/types';
 import { useRouter } from 'next/navigation';
 
 const VerifyPhone: NextPage = () => {
-    const auth = useAuth();
-    const router = useRouter();
+  const auth = useAuth();
+  const router = useRouter();
 
-    if (auth.type === LoadingStateTypes.LOADING) {
-        return <Spinner />;
-    } else if (
-        auth.type === LoadingStateTypes.LOADED &&
-        auth.user != null &&
-        auth.user.email != null
-    ) {
-        router.push('/');
-        return <Spinner />;
-    }
+  if (auth.type === LoadingStateTypes.LOADING) {
+    return <Spinner />;
+  } else if (
+    auth.type === LoadingStateTypes.LOADED &&
+    auth.user != null &&
+    auth.user.email != null
+  ) {
+    router.push('/');
+    return <Spinner />;
+  }
 
-    return (
-        <div style={{ height: '100%' }}>
-            <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <SignUpModal />
-        </div>
-    );
+  return (
+    <div style={{ height: '100%' }}>
+      <Head>
+        <title>Create Next App</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <SignUpModal />
+    </div>
+  );
 };
 
 export default VerifyPhone;
