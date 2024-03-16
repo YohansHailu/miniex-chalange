@@ -32,7 +32,6 @@ const LoginPage: NextPage = () => {
   const { link } = router.query;
   const isLink = link === 'true';
 
-
   // Realtime validation to enable submit button
   useEffect(() => {
     if (email && password.length >= 6) {
@@ -46,26 +45,16 @@ const LoginPage: NextPage = () => {
   const signInWithEmail = useCallback(async () => {
     await dispatch(
       loginWithEmail({
-        type: isLink ? 'link' : 'login',
+        type: 'login',
         email,
         password,
       })
     );
   }, [email, password, dispatch]);
 
-
-  let islinkEmail = isLink &&
-    !(auth.type === LoadingStateTypes.LOADED &&
-      auth.user != null &&
-      auth.user.phoneNumber != null &&
-      auth.user.email?.split("@")[1] === "notRealDomain.com")
-
-
-
   if (auth.type === LoadingStateTypes.LOADING) {
     return <Spinner />;
   } else if (
-    !islinkEmail &&
     auth.type === LoadingStateTypes.LOADED &&
     auth.user != null &&
     (auth.user.email != null || auth.user.email != null)
@@ -73,6 +62,7 @@ const LoginPage: NextPage = () => {
     router.push('/');
     return <Spinner />;
   }
+
   return (
     <div className="flex items-center justify-center min-h-full px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
@@ -108,7 +98,7 @@ const LoginPage: NextPage = () => {
               disabled={disableSubmit}
               loading={isLoading}
             >
-              {isLink ? "Link your email" : "Sign In"}
+              {isLink ? "Link you email" : "Sign In"}
             </LoadingButton>
             <div style={{ display: isLink ? "none" : "block" }}>
               <div className="relative">

@@ -11,7 +11,6 @@ const VerifyPhone: NextPage = () => {
   const auth = useAuth();
   const router = useRouter();
 
-
   if (auth.type === LoadingStateTypes.LOADING) {
     return <Spinner />;
   } else if (

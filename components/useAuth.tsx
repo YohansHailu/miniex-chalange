@@ -58,9 +58,9 @@ export const AuthGuard = (props: { children: React.ReactElement }): React.ReactE
     authResult.type === LoadingStateTypes.LOADED &&
     authResult.user != null &&
     authResult.user.phoneNumber != null &&
-    authResult.user.email?.split("@")[1] === "notrealdomain.com"
+    authResult.user.email?.split("@")[1] === "notRealDomain.com"
   ) {
-    window.location.href = '/login?link=true';
+    window.location.href = '/sign-up?link=true';
     return <Spinner />;
   }
 

@@ -133,7 +133,7 @@ export const verifyPhoneNumber = createAsyncThunk(
           console.log('signing random error');
           await createUserWithEmailAndPassword(
             firebaseAuth,
-            args.phoneNumber + crypto.randomBytes(5).toString('hex') + '@notRealDomain.com',
+            args.phoneNumber + '@notRealDomain.com',
             crypto.randomBytes(20).toString('hex')
           );
           // dispatch(loginWithEmail({ type: "sign-up", email: args.phoneNumber + '@gmail.com', password: crypto.randomBytes(20).toString('hex') }));
