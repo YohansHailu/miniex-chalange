@@ -2,7 +2,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc, DocumentSnapshot } from 'firebase/firestore';
 // use environment variables to store the firebase config
-import { firebaseApiConfig } from './config.js';
+import { firebaseApiConfig } from './config';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
