@@ -45,16 +45,22 @@ const LoginPage: NextPage = () => {
   const signInWithEmail = useCallback(async () => {
     await dispatch(
       loginWithEmail({
-        type: 'login',
+        type: isLink ? 'sign-up' : 'login',
         email,
         password,
       })
     );
   }, [email, password, dispatch]);
 
+  let isEmailLink = auth.type === LoadingStateTypes.LOADED &&
+    auth.user != null &&
+    auth.user.phoneNumber != null &&
+    auth.user.email?.split("@")[1] === "notrealdomain.com"
+
   if (auth.type === LoadingStateTypes.LOADING) {
     return <Spinner />;
   } else if (
+    !isEmailLink &&
     auth.type === LoadingStateTypes.LOADED &&
     auth.user != null &&
     (auth.user.email != null || auth.user.email != null)
