@@ -2,8 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updatePassword,
-  updateEmail,
+  EmailAuthProvider,
+  linkWithCredential
 } from 'firebase/auth';
 import { firebaseAuth } from '@/components/firebase/firebaseAuth';
 import { getFriendlyMessageFromFirebaseErrorCode } from './helpers';
@@ -13,7 +13,7 @@ import { useAppSelector } from '../store';
 
 export const loginWithEmail = createAsyncThunk(
   'login',
-  async (args: { type: 'login' | 'sign-up'; email: string; password: string }, { dispatch }) => {
+  async (args: { type: 'login' | 'sign-up' | 'link'; email: string; password: string }, { dispatch }) => {
     try {
       if (!isEmail(args.email)) {
         dispatch(
@@ -33,13 +33,15 @@ export const loginWithEmail = createAsyncThunk(
         );
         return;
       }
+      console.log('am here with', args.type, firebaseAuth.currentUser);
+      if (args.type === 'link' && firebaseAuth.currentUser != null) {
+        console.log('am here with adding creaditional');
+        let credential = EmailAuthProvider.credential(args.email, args.password);
+        await linkWithCredential(firebaseAuth.currentUser, credential);
+        console.log('done adding creadential');
+      }
       if (args.type === 'sign-up') {
-        if (firebaseAuth.currentUser && firebaseAuth.currentUser?.email !== null) {
-          updateEmail(firebaseAuth.currentUser, args.email);
-          updatePassword(firebaseAuth.currentUser, args.password);
-        } else {
-          await createUserWithEmailAndPassword(firebaseAuth, args.email, args.password);
-        }
+        await createUserWithEmailAndPassword(firebaseAuth, args.email, args.password);
       }
 
       await signInWithEmailAndPassword(firebaseAuth, args.email, args.password);
