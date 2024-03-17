@@ -11,6 +11,7 @@ import { getFriendlyMessageFromFirebaseErrorCode } from './helpers';
 import { showToast } from '../toast/toastSlice';
 import isEmail from 'validator/lib/isEmail';
 import { useAppSelector } from '../store';
+import { logout } from './logOut';
 
 export const loginWithEmail = createAsyncThunk(
   'login',
@@ -48,12 +49,20 @@ export const loginWithEmail = createAsyncThunk(
               console.log("am here about to update, here is --> ", data);
               const credential = PhoneAuthProvider.credential(data.verificationId, data.OTPCode);
               await updatePhoneNumber(firebaseAuth.currentUser, credential);
-              clearStoredPhoneNumberCredential(localStorage);
 
-            } catch (e) {
-              console.log("could not update phone number", e);
+            } catch (e: any) {
+              clearStoredPhoneNumberCredential(localStorage);
+              dispatch(
+                showToast({
+                  message: getFriendlyMessageFromFirebaseErrorCode(e.code),
+                  type: 'error',
+                })
+              );
+
+              dispatch(
+                logout())
+                ;
             }
-            console.log("am here about to clear, and done creading");
           }
 
         }

@@ -10,7 +10,7 @@ import Spinner from '@/components/Spinner';
 import LoginWithGoogleButton from '@/components/ui/LoginWithGoogleButton';
 import Input from '@/components/ui/Input';
 import LoadingButton from '@/components/ui/LoadingButton';
-import { decryptStoredPhoneNumberCredential } from '@/components/redux/auth/helpers';
+import { decryptStoredPhoneNumberCredential, is_loading, is_phone_and_email_missing, nothing_have_been_done } from '@/components/redux/auth/helpers';
 import { loginWithEmail, useIsLoginWithEmailLoading } from '@/components/redux/auth/loginWithEmail';
 import { LoadingStateTypes } from '@/components/redux/types';
 import UseYourPhoneButton from '@/components/ui/UseYourPhoneButton';
@@ -26,6 +26,12 @@ const LoginPage: NextPage = () => {
   const [password, setPassword] = useState('');
   const [disableSubmit, setDisableSubmit] = useState(true);
   const isLoading = useIsLoginWithEmailLoading();
+
+  let [is_email_linking, set_email_linking] = useState(false)
+
+  useEffect(() => {
+    set_email_linking(is_phone_and_email_missing(localStorage))
+  }, []);
 
   const router = useRouter();
 
@@ -52,16 +58,23 @@ const LoginPage: NextPage = () => {
     );
   }, [email, password, dispatch]);
 
-  if (auth.type === LoadingStateTypes.LOADING) {
+  if (is_loading(auth)) {
     return <Spinner />;
-  } else if (
-    !isLink &&
-    auth.type === LoadingStateTypes.LOADED &&
-    auth.user != null &&
-    (auth.user.email != null || auth.user.email != null)
-  ) {
-    router.push('/');
-    return <Spinner />;
+  }
+
+
+  if (isLink) {
+    if (!is_email_linking) {
+      router.push('/');
+      return <Spinner />;
+    }
+  }
+
+  if (!isLink) {
+    if (!nothing_have_been_done(auth) && !is_email_linking) {
+      router.push('/');
+      return <Spinner />;
+    }
   }
 
   return (

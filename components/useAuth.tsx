@@ -1,11 +1,20 @@
 import { User } from 'firebase/auth';
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Spinner from './Spinner';
 import { firebaseAuth } from './firebase/firebaseAuth';
 import { LoadingStateTypes } from './redux/types';
 import Header from './ui/Header';
-import { decryptStoredPhoneNumberCredential } from './redux/auth/helpers';
+import { useEffect } from 'react';
+import {
+  decryptStoredPhoneNumberCredential,
+  nothing_have_been_done,
+  is_loading,
+  is_phone_missing,
+  is_phone_and_email_missing,
+  is_fully_loged_in
+} from './redux/auth/helpers';
+
 
 export type AuthContextType =
   | {
@@ -38,28 +47,35 @@ export const useAuth = (): AuthContextType => {
 
 export const AuthGuard = (props: { children: React.ReactElement }): React.ReactElement => {
   const authResult = useAuth();
-  // sleep 1 second
-  console.log("am here", authResult.type);
-  if (authResult.type === LoadingStateTypes.LOADING) {
+  let [is_email_linking, set_email_linking] = useState(false)
+  useEffect(() => {
+    set_email_linking(is_phone_and_email_missing(localStorage))
+  }, []);
+
+  if (is_email_linking) {
+
+    window.location.href = '/login?link=true'
     return <Spinner />;
-  } else if (
-    authResult.type === LoadingStateTypes.LOADED &&
-    authResult.user != null &&
-    authResult.user.phoneNumber == null &&
-    decryptStoredPhoneNumberCredential(localStorage) === null
-  ) {
-    window.location.href = '/verify-phone?link=true';
+  }
+
+  if (nothing_have_been_done(authResult) && !is_email_linking) {
+    console.log('nothing_have_been_done');
+    window.location.href = '/login';
     return <Spinner />;
-  } else if (
-    authResult.type === LoadingStateTypes.NOT_LOADED
-  ) {
-    window.location.href = decryptStoredPhoneNumberCredential(localStorage) !== null ? '/login?link=true' : '/login';
+  }
+
+  if (is_loading(authResult)) {
     return <Spinner />;
   }
 
 
+  if (is_phone_missing(authResult)) {
+    window.location.href = '/verify-phone?link=true';
+    return <Spinner />;
+  }
 
-  else {
+
+  if (is_fully_loged_in(authResult)) {
     return (
       <>
         <Header />
@@ -67,4 +83,7 @@ export const AuthGuard = (props: { children: React.ReactElement }): React.ReactE
       </>
     );
   }
+
+
+  return (<h1> there is something wrong with your account, please try again </h1>)
 };

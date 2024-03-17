@@ -1,5 +1,6 @@
 import CryptoJS from 'crypto-js'
 import { debugErrorMap } from 'firebase/auth';
+import { LoadingStateTypes } from '../types';
 
 export const getFriendlyMessageFromFirebaseErrorCode = (errorCode: string | null) => {
   const messageFromFirebase: string | null =
@@ -34,3 +35,23 @@ export const decryptStoredPhoneNumberCredential = (localStorage: any) => {
 export const clearStoredPhoneNumberCredential = (localStorage: any) => {
   localStorage.removeItem('encryptedDataPhoneNumber');
 }
+
+
+
+export const is_fully_loged_in = (authResult: any) => authResult.type === LoadingStateTypes.LOADED &&
+  authResult.user !== null &&
+  authResult.user.phoneNumber !== null &&
+  authResult.user.email !== null
+
+export const is_phone_missing = (authResult: any) => authResult.type === LoadingStateTypes.LOADED
+  && authResult.user !== null
+  && authResult.user.email !== null
+  && authResult.user.phoneNumber === null;
+
+// are phone and email yet to be verified
+export const is_phone_and_email_missing = (localStorage: any) => decryptStoredPhoneNumberCredential(localStorage) !== null;
+
+
+export const is_loading = (authResult: any) => authResult.type === LoadingStateTypes.LOADING;
+
+export const nothing_have_been_done = (authResult: any) => authResult.type === LoadingStateTypes.NOT_LOADED;
