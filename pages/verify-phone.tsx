@@ -13,12 +13,20 @@ import {
   is_loading,
   is_phone_missing,
 } from '@/components/redux/auth/helpers';
+import { useEffect, useState } from 'react';
+import { is_phone_and_email_missing } from '@/components/redux/auth/helpers';
 
 const VerifyPhone: NextPage = () => {
   const auth = useAuth();
   const router = useRouter();
 
   const { signin, link, signup } = router.query;
+
+
+  let [is_email_linking, set_email_linking] = useState(false)
+  useEffect(() => {
+    set_email_linking(is_phone_and_email_missing(localStorage))
+  }, []);
 
   // link -  is to link a phone number
   //signin - when trying to login using phone number
@@ -30,6 +38,11 @@ const VerifyPhone: NextPage = () => {
 
 
   if (is_loading(auth)) {
+    return <Spinner />
+  }
+
+  if (is_email_linking) {
+    router.push('/');
     return <Spinner />
   }
 

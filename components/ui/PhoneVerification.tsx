@@ -65,6 +65,7 @@ const PhoneVerification = (prop: { type: 'link' | 'signin' | 'signup' }) => {
       verifyPhoneNumber({
         type,
         phoneNumber,
+        window: window,
         auth,
         OTPCode,
         verificationId,

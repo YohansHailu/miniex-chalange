@@ -28,6 +28,7 @@ const SignUpModal = () => {
   const signUpWithEmail = useCallback(async () => {
     dispatch(
       loginWithEmail({
+        window: window,
         type: 'sign-up',
         email,
         password,

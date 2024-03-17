@@ -109,6 +109,7 @@ export const verifyPhoneNumber = createAsyncThunk(
       auth: AuthContextType;
       verificationId: string;
       phoneNumber: string;
+      window: any;
       callback: (
         args:
           | { type: 'success' }
@@ -129,8 +130,8 @@ export const verifyPhoneNumber = createAsyncThunk(
         if (args.auth.type !== LoadingStateTypes.LOADED && args.type === 'link') return;
 
         if (args.type === 'signup') {
-          // encrypt the phone number and store it in local storage
           encryptAndStorePhoneNumberCredential(localStorage, { verificationId: args.verificationId, OTPCode: args.OTPCode });
+          window.location.reload();
         }
         if (firebaseAuth.currentUser) {
           console.log('linking phone number');
