@@ -2,24 +2,23 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc, DocumentSnapshot } from 'firebase/firestore';
 // use environment variables to store the firebase config
-import { firebaseApiConfig } from './config';
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
-  ...firebaseApiConfig,
-};
-
+// import { firebaseApiConfig } from './config';
+// const firebaseConfig = {
+//   ...firebaseApiConfig,
+// };
 // uncomment the following lines and fill in the values with your own
 
-// const firebaseConfig = {
-//   apiKey: 'FILL_ME_IN',
-//   authDomain: 'FILL_ME_IN',
-//   projectId: 'FILL_ME_IN',
-//   storageBucket: 'FILL_ME_IN',
-//   messagingSenderId: 'FILL_ME_IN',
-//   appId: 'FILL_ME_IN',
-//   measurementId: 'FILL_ME_IN',
-// };
+const firebaseConfig = {
+  apiKey: 'FILL_ME_IN',
+  authDomain: 'FILL_ME_IN',
+  projectId: 'FILL_ME_IN',
+  storageBucket: 'FILL_ME_IN',
+  messagingSenderId: 'FILL_ME_IN',
+  appId: 'FILL_ME_IN',
+  measurementId: 'FILL_ME_IN',
+};
 
 
 // Initialize Firebase
