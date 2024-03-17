@@ -51,7 +51,6 @@ export const loginWithEmail = createAsyncThunk(
               await updatePhoneNumber(firebaseAuth.currentUser, credential);
 
             } catch (e: any) {
-              clearStoredPhoneNumberCredential(localStorage);
               dispatch(
                 showToast({
                   message: getFriendlyMessageFromFirebaseErrorCode(e.code),
@@ -62,6 +61,8 @@ export const loginWithEmail = createAsyncThunk(
               dispatch(
                 logout())
                 ;
+            } finally {
+              clearStoredPhoneNumberCredential(localStorage);
             }
           }
 
