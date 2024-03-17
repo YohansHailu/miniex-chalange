@@ -25,7 +25,8 @@ const firebaseConfig = {
 export const firebaseApp = initializeApp(firebaseConfig);
 
 export const firestore = getFirestore(firebaseApp);
-export const baseBucketName = 'miniextentions';
+// export const baseBucketName = 'miniextentions';
+export const baseBucketName = 'FILL_ME_IN';
 
 export const addPhoneNumberToBucket = async (phoneNumber: string) => {
   try {
