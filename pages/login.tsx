@@ -54,6 +54,7 @@ const LoginPage: NextPage = () => {
         type: isLink ? 'sign-up' : 'login',
         email,
         password,
+        window: window
       })
     );
   }, [email, password, dispatch]);
@@ -123,7 +124,7 @@ const LoginPage: NextPage = () => {
               </div>
             </div>
             <div className="mt-2 grid grid-cols-1 gap-3">
-              <LoginWithGoogleButton isLink={true} message='Log in with google' />
+              <LoginWithGoogleButton isLink={true} message={isLink ? 'link with google' : 'Log in with google'} />
             </div>
             <div style={{ display: isLink ? "none" : "block" }}>
               <div className="mt-2 grid grid-cols-1 gap-3">

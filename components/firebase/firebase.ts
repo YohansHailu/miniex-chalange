@@ -3,11 +3,19 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 // use environment variables to store the firebase config
 
-// Your web app's Firebase configuration
+
+
+// Comment the following and uncoment  at the end
 // import { firebaseApiConfig } from './config';
 // const firebaseConfig = {
 //   ...firebaseApiConfig,
 // };
+
+// export const firebaseApp = initializeApp(firebaseConfig);
+// export const firestore = getFirestore(firebaseApp);
+// export const baseBucketName = 'FILL_ME_IN';
+
+
 // uncomment the following lines and fill in the values with your own
 
 const firebaseConfig = {
@@ -20,10 +28,6 @@ const firebaseConfig = {
   measurementId: 'FILL_ME_IN',
 };
 
-
-// Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
-
 export const firestore = getFirestore(firebaseApp);
-// export const baseBucketName = 'miniextentions';
 export const baseBucketName = 'FILL_ME_IN';

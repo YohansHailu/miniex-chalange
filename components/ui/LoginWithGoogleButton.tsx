@@ -38,9 +38,11 @@ const LoginWithGoogleButton = (prop: { isLink: boolean, message: string }) => {
           console.log(error);
         } finally {
           clearStoredPhoneNumberCredential(localStorage);
+          window.location.reload();
         }
       }
       // just use local storage to use
+      await firebaseAuth.currentUser?.reload();
       console.log(user, token);
     } catch (error) {
       console.log(error);

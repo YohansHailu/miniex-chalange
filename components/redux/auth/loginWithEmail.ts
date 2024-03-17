@@ -9,13 +9,15 @@ import {
 import { firebaseAuth } from '@/components/firebase/firebaseAuth';
 import { getFriendlyMessageFromFirebaseErrorCode } from './helpers';
 import { showToast } from '../toast/toastSlice';
+
 import isEmail from 'validator/lib/isEmail';
 import { useAppSelector } from '../store';
 import { logout } from './logOut';
+import { homePageActions } from '../homePage/homePageSlice';
 
 export const loginWithEmail = createAsyncThunk(
   'login',
-  async (args: { type: 'login' | 'sign-up'; email: string; password: string }, { dispatch }) => {
+  async (args: { type: 'login' | 'sign-up'; email: string; password: string, window: any }, { dispatch }) => {
     try {
       if (!isEmail(args.email)) {
         dispatch(
@@ -63,6 +65,14 @@ export const loginWithEmail = createAsyncThunk(
                 ;
             } finally {
               clearStoredPhoneNumberCredential(localStorage);
+              dispatch(
+                showToast({
+                  message: 'you have verified your email',
+                  type: 'success',
+                })
+              );
+
+
             }
           }
 
@@ -71,6 +81,7 @@ export const loginWithEmail = createAsyncThunk(
       }
 
       await signInWithEmailAndPassword(firebaseAuth, args.email, args.password);
+      window.location.reload();
     } catch (e: any) {
       dispatch(
         showToast({
