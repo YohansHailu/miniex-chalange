@@ -77,16 +77,16 @@ const SignUpModal = () => {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="bg-white px-2 text-gray-500">Or login with</span>
+                <span className="bg-white px-2 text-gray-500">Or sign up with</span>
               </div>
             </div>
             <div className="mt-2 grid grid-cols-1 gap-3">
-              <LoginWithGoogleButton isLink={false} />
+              <LoginWithGoogleButton isLink={false} message='Sign up with Google' />
             </div>
 
             <div className="mt-2 grid grid-cols-1 gap-3">
               <Link href="/verify-phone?signup=true">
-                <UseYourPhoneButton />
+                <UseYourPhoneButton message='Sign up with phone' />
               </Link>
             </div>
             <div className="mt-6">

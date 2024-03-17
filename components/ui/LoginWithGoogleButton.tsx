@@ -13,7 +13,7 @@ const provider = new GoogleAuthProvider();
  * Use this component to trigger Google modal and login with Google account
  * @returns
  */
-const LoginWithGoogleButton = (prop: { isLink: boolean }) => {
+const LoginWithGoogleButton = (prop: { isLink: boolean, message: string }) => {
   useEffect(() => {
 
 
@@ -53,7 +53,7 @@ const LoginWithGoogleButton = (prop: { isLink: boolean }) => {
       onClick={loginWithGoogle}
     >
       <Image src={GoogleGLogo} alt="Google logo" layout="intrinsic" height={20} width={20} />
-      <div className="ml-2">Google</div>
+      <div className="ml-2">{prop.message}</div>
     </button>
   );
 };

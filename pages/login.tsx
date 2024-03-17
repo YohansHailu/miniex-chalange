@@ -112,7 +112,7 @@ const LoginPage: NextPage = () => {
               disabled={disableSubmit}
               loading={isLoading}
             >
-              {isLink ? "Link you email" : "Sign In"}
+              {isLink ? "Link your email" : "Sign In"}
             </LoadingButton>
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -123,12 +123,12 @@ const LoginPage: NextPage = () => {
               </div>
             </div>
             <div className="mt-2 grid grid-cols-1 gap-3">
-              <LoginWithGoogleButton isLink={true} />
+              <LoginWithGoogleButton isLink={true} message='Log in with google' />
             </div>
             <div style={{ display: isLink ? "none" : "block" }}>
               <div className="mt-2 grid grid-cols-1 gap-3">
                 <Link href="/verify-phone?signin=true">
-                  <UseYourPhoneButton />
+                  <UseYourPhoneButton message='Log in with phone' />
                 </Link>
               </div>
               <div className="mt-6">
