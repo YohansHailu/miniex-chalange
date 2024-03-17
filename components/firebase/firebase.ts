@@ -27,34 +27,3 @@ export const firebaseApp = initializeApp(firebaseConfig);
 export const firestore = getFirestore(firebaseApp);
 // export const baseBucketName = 'miniextentions';
 export const baseBucketName = 'FILL_ME_IN';
-
-export const addPhoneNumberToBucket = async (phoneNumber: string) => {
-  try {
-    // Add the phone number document to the bucket
-    await setDoc(doc(firestore, baseBucketName, phoneNumber), { exists: true });
-    console.log('Phone number added to the bucket:', phoneNumber);
-    return true;
-  } catch (error) {
-    console.error('Error adding phone number to the bucket:', error);
-    return false;
-  }
-};
-
-export const checkPhoneNumberInBucket = async (phoneNumber: string) => {
-  try {
-    // Check if the document with the phone number exists in the bucket
-    const docSnapshot: DocumentSnapshot = await getDoc(
-      doc(firestore, baseBucketName, phoneNumber)
-    );
-    if (docSnapshot.exists()) {
-      console.log('Phone number exists in the bucket:', phoneNumber);
-      return true;
-    } else {
-      console.log('Phone number does not exist in the bucket:', phoneNumber);
-      return false;
-    }
-  } catch (error) {
-    console.error('Error checking phone number in the bucket:', error);
-    return false;
-  }
-};

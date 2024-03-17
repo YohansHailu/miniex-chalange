@@ -32,8 +32,13 @@ const LoginWithGoogleButton = (prop: { isLink: boolean }) => {
 
         let data = decryptStoredPhoneNumberCredential(localStorage);
         const credential = PhoneAuthProvider.credential(data.verificationId, data.OTPCode);
-        await updatePhoneNumber(firebaseAuth.currentUser, credential);
-        clearStoredPhoneNumberCredential(localStorage);
+        try {
+          await updatePhoneNumber(firebaseAuth.currentUser, credential);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          clearStoredPhoneNumberCredential(localStorage);
+        }
       }
       // just use local storage to use
       console.log(user, token);
